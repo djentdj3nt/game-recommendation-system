@@ -1,0 +1,37 @@
+
+---
+export interface Props {
+    game: {
+        id: number;
+        title: string;
+        description: string;
+        genres: string[];
+        rating: number;
+        image: string;
+    };
+}
+
+const { game } = Astro.props;
+
+const stars = Math.floor(game.rating);
+const halfStar = game.rating % 1 >= 0.5;
+const emptyStars = 5 - stars - (halfStar ? 1 : 0);
+---
+
+<div class="game-card">
+    <img src={game.image} alt={game.title} class="game-cover" loading="lazy">
+    <div class="game-content">
+        <h3 class="game-title">{game.title}</h3>
+        <p class="game-description">{game.description}</p>
+        <div class="game-genres">
+            {game.genres.map(genre => <span class="genre-tag">{genre}</span>)}
+        </div>
+        <div class="rating-container">
+            {[...Array(stars)].map(() => <span class="star">★</span>)}
+            {halfStar && <span class="star">★</span>}
+            {[...Array(emptyStars)].map(() => <span class="star" style="color: var(--gray-300);">★</span>)}
+            <span class="rating-text">{game.rating.toFixed(1)}</span>
+        </div>
+        <a href="#" class="details-button">Подробнее</a>
+    </div>
+</div>
