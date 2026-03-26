@@ -16,7 +16,7 @@
         <p class="modal-text">Для доступа к расширенным настройкам необходимо зарегистрироваться в системе GameHub.</p>
         <div class="modal-buttons">
             <button class="modal-button modal-cancel" @click="open = false; document.body.style.overflow = 'auto'">Отмена</button>
-            <button class="modal-button modal-register" @click="open = false; document.body.style.overflow = 'auto'; alert('Перенаправление на страницу регистрации...');">Зарегистрироваться</button>
+            <button class="modal-button modal-register" @click="open = false; document.body.style.overflow = 'auto'; window.location.href = '/register'">Зарегистрироваться</button>
         </div>
     </div>
 </div>

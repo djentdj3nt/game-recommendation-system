@@ -1,0 +1,50 @@
+---
+import '../styles/global.css';
+import RegisterForm from '../components/RegisterForm.astro';
+import Modal from '../components/Modal.astro';
+---
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Регистрация — GameHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <div class="container header-container">
+      <a href="/" class="logo-container">
+        <img src="https://image.qwenlm.ai/public_source/efde04de-8f99-4dab-98c0-32e6925f6494/15bbac074-c573-4699-9c94-60aeb9bdb793.png" alt="GameHub Logo" class="logo-img">
+        <span class="logo-text">GameHub</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/" class="nav-link">Explore</a></li>
+      </ul>
+      <a href="/" class="auth-button">На главную</a>
+    </div>
+  </header>
+
+  <main class="container" style="padding: var(--spacing-3xl) 0; max-width:720px;">
+    <section class="section">
+      <h1 class="section-title">Регистрация</h1>
+      <p class="section-subtitle">Создайте аккаунт, чтобы получать персонализированные рекомендации.</p>
+
+      <RegisterForm />
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-column" style="text-align:center; padding: var(--spacing-lg) 0;">
+        <p style="color: var(--gray-300);">&copy; 2026 GameHub</p>
+      </div>
+    </div>
+  </footer>
+
+  <Modal />
+</body>
+</html>

@@ -1,0 +1,55 @@
+---
+---
+
+<form id="register-form" class="form-container" action="#" method="post" onsubmit="return false;">
+    <h2 class="form-title">Создать аккаунт</h2>
+
+    <div class="form-field">
+        <label for="name">Полное имя</label>
+        <input id="name" name="name" type="text" placeholder="Иван Иванов" required>
+    </div>
+
+    <div class="form-field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" placeholder="you@example.com" required>
+    </div>
+
+    <div class="form-field">
+        <label for="password">Пароль</label>
+        <input id="password" name="password" type="password" placeholder="Минимум 8 символов" required>
+    </div>
+
+    <div class="form-field">
+        <label for="confirm_password">Подтвердите пароль</label>
+        <input id="confirm_password" name="confirm_password" type="password" placeholder="Повторите пароль" required>
+    </div>
+
+    <div class="form-field form-checkbox">
+        <label><input type="checkbox" id="terms" name="terms" required> Я принимаю условия использования</label>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="submit-button">Зарегистрироваться</button>
+        <a href="/" class="link-cancel">Отмена</a>
+    </div>
+</form>
+
+<script>
+document.addEventListener('submit', function(e){
+  if (e.target && e.target.id === 'register-form') {
+    e.preventDefault();
+    const form = e.target;
+    const pw = form.password.value.trim();
+    const cpw = form.confirm_password.value.trim();
+    const email = form.email.value.trim();
+    if (!email) { alert('Введите email'); return; }
+    if (pw.length < 8) { alert('Пароль должен быть как минимум 8 символов'); return; }
+    if (pw !== cpw) { alert('Пароли не совпадают'); return; }
+    if (!form.terms.checked) { alert('Примите условия использования'); return; }
+
+    // Demo behavior: simulate success and redirect to home
+    alert('Регистрация прошла успешно (демо). Перенаправление...');
+    window.location.href = '/';
+  }
+});
+</script>
