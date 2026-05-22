@@ -1,51 +1,75 @@
 # PlayNext
 
-PlayNext is a client-server web application for discovering games, saving favorite genres, rating titles, and writing reviews.
+PlayNext is a client-server web application for game discovery. It lets players browse a curated catalog, save favorite genres, rate games, write one review per game, and view a lightweight player profile.
 
-## Tech Stack
+The project is intentionally simple enough for a junior developer to maintain, but polished enough to present as a believable product prototype.
+
+## Stack
 
 - Frontend: HTML, CSS, JavaScript
 - Backend: Python, FastAPI, SQLAlchemy
 - Database: PostgreSQL
-- Web server: Nginx
+- Web server / reverse proxy: Nginx
 - Infrastructure: Docker Compose
 
-## Main Features
+## Current MVP Scope
 
-- User registration and login with JWT authentication
-- Explore page with game cards and cover images
-- Game details page with description, genres, system requirements, ratings, and reviews
-- User rating from 1 to 5 stars
-- One personal review per game, with update support
+- Registration and login with JWT authentication
+- Demo account for quick presentations
+- Explore page with featured shelves and search
+- Game detail page with ratings, reviews, and related games
 - Preferences page with favorite genres
-- Favorite games list based on 5-star ratings
-- Profile page with account information and user statistics
+- Favorite games shelf based on 5-star ratings
+- Profile page with account statistics and recent activity
 
 ## Project Structure
 
 ```text
-backend/              FastAPI backend application
-frontend/             Static frontend files
-nginx/                Nginx Dockerfile and configuration
-covers/               Game cover images
-docker-compose.yml    Docker Compose services
+backend/              FastAPI application
+frontend/             Static frontend files served by Nginx
+nginx/                Nginx Dockerfile and reverse proxy config
+covers/               Local game cover images
+public/               Favicon assets
+docker-compose.yml    Multi-container setup
 ```
 
-## First Start
+## Run the Project
 
-Run these commands from the project root:
+From the project root:
 
 ```bash
+cp .env.example .env
 docker compose up --build
 ```
 
-Then open the application in a browser:
+Open the application in a browser:
 
 ```text
 http://localhost:8080
 ```
 
-On the first start, the backend creates the database tables and fills the catalog with games, genres, ratings, and reviews.
+## Demo Account
+
+You can log in with the prepared demo account:
+
+```text
+Email: demo@playnext.com
+Password: demo12345
+```
+
+The demo account is seeded with favorite genres, ratings, reviews, favorites, and recent activity to make product presentations easier.
+
+## Data Seeding
+
+On startup the backend:
+
+- creates database tables
+- seeds genres and games
+- adds demo users
+- adds sample ratings and reviews
+- prepares recent activity for the demo account
+
+If the PostgreSQL volume already exists, previously saved local data is preserved.
 
 ## Stop the Project
 
@@ -53,43 +77,37 @@ On the first start, the backend creates the database tables and fills the catalo
 docker compose down
 ```
 
-This stops and removes the containers, but keeps the PostgreSQL data volume.
-
-## Start Again Without Resetting Data
-
-Use this when you want to continue with the same database:
+## Start Again
 
 ```bash
-docker compose up
-```
-
-If you changed code or static files, rebuild the images:
-
-```bash
-docker compose up --build
-```
-
-If the browser still shows old frontend files, rebuild Nginx without cache:
-
-```bash
-docker compose build --no-cache nginx
 docker compose up
 ```
 
 ## Full Reset
 
-Use this when you want to start from a clean database:
+Use this when you want a clean database:
 
 ```bash
 docker compose down -v --remove-orphans
 docker compose up --build
 ```
 
-The `-v` flag removes the PostgreSQL volume, so all registered users, ratings, and reviews created during local testing will be deleted.
+## Optional Configuration
 
-## Useful Checks
+You can edit `.env` before startup. Useful variables:
 
-Show container status:
+```text
+POSTGRES_DB
+POSTGRES_USER
+POSTGRES_PASSWORD
+JWT_SECRET_KEY
+ACCESS_TOKEN_EXPIRE_MINUTES
+APP_PORT
+```
+
+## Useful Commands
+
+Check running containers:
 
 ```bash
 docker compose ps

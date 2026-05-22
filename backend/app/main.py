@@ -17,6 +17,7 @@ from .schemas import (
     PreferencesResponse,
     PreferencesUpdateRequest,
     ProfileResponse,
+    RatingBreakdownItem,
     RatingRequest,
     RegisterRequest,
     ReviewOut,
@@ -69,6 +70,14 @@ def serialize_review(review: Review, current_user_id: int | None) -> ReviewOut:
     )
 
 
+def get_rating_breakdown(game: Game) -> list[RatingBreakdownItem]:
+    counts = {stars: 0 for stars in range(5, 0, -1)}
+    for rating in game.ratings:
+        if rating.value in counts:
+            counts[rating.value] += 1
+    return [RatingBreakdownItem(stars=stars, count=counts[stars]) for stars in range(5, 0, -1)]
+
+
 def serialize_game(game: Game, current_user: User | None, preferred_genres: set[str]) -> GameCardOut:
     genre_names = sorted(genre.name for genre in game.genres)
     ratings = [rating.value for rating in game.ratings]
@@ -79,7 +88,8 @@ def serialize_game(game: Game, current_user: User | None, preferred_genres: set[
             if rating.user_id == current_user.id:
                 my_rating = rating.value
                 break
-    recommended_score = sum(1 for genre in genre_names if genre in preferred_genres)
+    matched_genres = sorted(genre for genre in genre_names if genre in preferred_genres)
+    recommended_score = len(matched_genres)
 
     return GameCardOut(
         id=game.id,
@@ -88,9 +98,11 @@ def serialize_game(game: Game, current_user: User | None, preferred_genres: set[
         cover_path=game.cover_path,
         genres=genre_names,
         average_rating=average_rating,
+        ratings_count=len(game.ratings),
         reviews_count=len(game.reviews),
         my_rating=my_rating,
         recommended_score=recommended_score,
+        matched_genres=matched_genres,
     )
 
 
@@ -127,6 +139,16 @@ def build_profile_response(db: Session, user: User) -> ProfileResponse:
         reviews_count=len(refreshed_user.reviews),
         favorite_genres_count=len(refreshed_user.favorite_genres),
         favorite_games_count=favorite_games_count,
+        favorite_genres=sorted(genre.name for genre in refreshed_user.favorite_genres),
+    )
+
+
+def get_user_with_preferences(db: Session, user_id: int) -> User:
+    return (
+        db.query(User)
+        .options(joinedload(User.favorite_genres))
+        .filter(User.id == user_id)
+        .first()
     )
 
 
@@ -222,12 +244,7 @@ def list_games(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    current_user = (
-        db.query(User)
-        .options(joinedload(User.favorite_genres))
-        .filter(User.id == current_user.id)
-        .first()
-    )
+    current_user = get_user_with_preferences(db, current_user.id)
     preferred_genres = {genre.name for genre in current_user.favorite_genres}
     games = [serialize_game(game, current_user, preferred_genres) for game in get_games_query(db).all()]
 
@@ -260,6 +277,9 @@ def get_game_details(
     my_rating = next((rating.value for rating in game.ratings if rating.user_id == current_user.id), None)
     my_review_obj = next((review for review in game.reviews if review.user_id == current_user.id), None)
     ordered_reviews = sorted(game.reviews, key=lambda review: review.updated_at, reverse=True)
+    current_user = get_user_with_preferences(db, current_user.id)
+    preferred_genres = {genre.name for genre in current_user.favorite_genres}
+    game_genres = sorted(genre.name for genre in game.genres)
 
     log_action(db, current_user.id, "view_game", game.title)
     db.commit()
@@ -271,12 +291,14 @@ def get_game_details(
         description=game.description,
         cover_path=game.cover_path,
         system_requirements=game.system_requirements,
-        genres=sorted(genre.name for genre in game.genres),
+        genres=game_genres,
         average_rating=average_rating,
         ratings_count=len(game.ratings),
         reviews_count=len(game.reviews),
         my_rating=my_rating,
         my_review=my_review_obj.content if my_review_obj else None,
+        matched_genres=sorted(genre for genre in game_genres if genre in preferred_genres),
+        rating_breakdown=get_rating_breakdown(game),
         reviews=[serialize_review(review, current_user.id) for review in ordered_reviews],
     )
 
@@ -328,6 +350,11 @@ def upsert_review(
         .first()
     )
     cleaned_content = payload.content.strip()
+    if len(cleaned_content) < 3:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Review must contain at least 3 non-space characters.",
+        )
 
     if review is None:
         db.add(Review(user_id=current_user.id, game_id=game_id, content=cleaned_content))
@@ -396,3 +423,40 @@ def update_preferences(
     log_action(db, current_user.id, "update_preferences", ", ".join(requested_genres) or "no genres")
     db.commit()
     return MessageResponse(message="Favorite genres updated.")
+
+
+@app.get("/api/users/me/recently-viewed", response_model=list[GameCardOut])
+def get_recently_viewed(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    user = get_user_with_preferences(db, current_user.id)
+    preferred_genres = {genre.name for genre in user.favorite_genres}
+    activity_logs = (
+        db.query(ActivityLog)
+        .filter(ActivityLog.user_id == current_user.id, ActivityLog.action == "view_game")
+        .order_by(ActivityLog.created_at.desc())
+        .all()
+    )
+
+    unique_titles = []
+    seen_titles = set()
+    for log_item in activity_logs:
+        if log_item.details not in seen_titles:
+            unique_titles.append(log_item.details)
+            seen_titles.add(log_item.details)
+        if len(unique_titles) == 6:
+            break
+
+    if not unique_titles:
+        return []
+
+    game_lookup = {
+        game.title: game
+        for game in get_games_query(db).filter(Game.title.in_(unique_titles)).all()
+    }
+    return [
+        serialize_game(game_lookup[title], user, preferred_genres)
+        for title in unique_titles
+        if title in game_lookup
+    ]

@@ -52,9 +52,16 @@ class GameCardOut(BaseModel):
     cover_path: str
     genres: list[str]
     average_rating: float
+    ratings_count: int
     reviews_count: int
     my_rating: int | None = None
     recommended_score: int = 0
+    matched_genres: list[str] = Field(default_factory=list)
+
+
+class RatingBreakdownItem(BaseModel):
+    stars: int
+    count: int
 
 
 class GameDetailOut(BaseModel):
@@ -70,6 +77,8 @@ class GameDetailOut(BaseModel):
     reviews_count: int
     my_rating: int | None = None
     my_review: str | None = None
+    matched_genres: list[str] = Field(default_factory=list)
+    rating_breakdown: list[RatingBreakdownItem] = Field(default_factory=list)
     reviews: list[ReviewOut]
 
 
@@ -99,3 +108,4 @@ class ProfileResponse(BaseModel):
     reviews_count: int
     favorite_genres_count: int
     favorite_games_count: int
+    favorite_genres: list[str] = Field(default_factory=list)

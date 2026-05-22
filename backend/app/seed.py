@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from .auth import hash_password
+from .game_descriptions import PAGE_DESCRIPTION_OVERRIDES
 from .models import ActivityLog, Game, Genre, Rating, Review, User
 
 
@@ -40,11 +41,14 @@ def requirements(cpu="Intel Core i5 / AMD Ryzen 5", ram="8 GB", gpu="NVIDIA GTX 
 
 GAME_CATALOG = [
     ("Alan Wake", "Alan_Wake.jpg", ["Horror", "Story Rich", "Action"]),
+    ("Alien: Isolation", "Alien_Isolation.jpg", ["Horror", "Survival", "Story Rich"]),
     ("Amnesia: A Machine for Pigs", "Amnesia_A_Machine_For_Pigs.jpg", ["Horror", "Adventure", "Story Rich"]),
     ("Amnesia: Rebirth", "Amnesia_Rebirth.jpg", ["Horror", "Adventure", "Story Rich"]),
     ("Amnesia: The Bunker", "Amnesia_The_Bunker.jpg", ["Horror", "Survival", "Stealth"]),
     ("Amnesia: The Dark Descent", "Amnesia_The_Dark_Descent.jpg", ["Horror", "Survival", "Classic"]),
     ("Assassin's Creed Unity", "Assasin_s_Creed_Unity.jpg", ["Action", "Adventure", "Open World", "Stealth"]),
+    ("Atomic Heart", "Atomic_Heart.jpg", ["Shooter", "Action", "Story Rich"]),
+    ("Baldur's Gate 3", "Baldurs_Gate_3.jpg", ["RPG", "Adventure", "Story Rich"]),
     ("Batman: Arkham Asylum", "Batman_Arkham_Asylum.jpg", ["Action", "Adventure", "Superhero"]),
     ("Batman: Arkham City", "Batman_Arkham_City.jpg", ["Action", "Adventure", "Superhero", "Open World"]),
     ("Batman: Arkham Knight", "Batman_Arkham_Knight.jpg", ["Action", "Adventure", "Superhero", "Open World"]),
@@ -53,12 +57,18 @@ GAME_CATALOG = [
     ("Battlefield 4", "Battlefield_4.jpg", ["Shooter", "Action", "Multiplayer"]),
     ("Battlefield V", "Battlefield_V.jpg", ["Shooter", "Action", "Multiplayer"]),
     ("BioShock 2", "Bioshock_2.jpg", ["Shooter", "Story Rich", "Action"]),
+    ("Black Myth: Wukong", "Black_Myth_Wukong.jpg", ["Action", "RPG", "Adventure"]),
     ("Buckshot Roulette", "Buckshot_Roulette.jpg", ["Horror", "Strategy"]),
     ("Chained Together", "Chained_together.jpg", ["Co-op", "Adventure", "Puzzle"]),
+    ("Civilization VI", "Civilization_6.jpg", ["Strategy", "Simulation", "Multiplayer"]),
     ("Counter-Strike 2", "Counter_Strike_2.jpg", ["Shooter", "Competitive", "Action"]),
+    ("Cyberpunk 2077", "Cyberpunk_2077.jpg", ["RPG", "Open World", "Story Rich"]),
     ("Darkwood", "Darkwood.jpg", ["Horror", "Survival", "Story Rich"]),
+    ("Detroit: Become Human", "Detroit_Become_Human.jpg", ["Adventure", "Story Rich"]),
     ("Dota 2", "Dota_2.jpg", ["MOBA", "Competitive", "Strategy"]),
+    ("Elden Ring", "Elden_Ring.jpg", ["RPG", "Action", "Open World"]),
     ("Factorio", "Factorio.jpg", ["Strategy", "Simulation"]),
+    ("Far Cry 3", "Far_Cry_3.jpg", ["Shooter", "Action", "Open World"]),
     ("Fallout 4", "Fallout_4.jpg", ["RPG", "Shooter", "Open World"]),
     ("Fallout: New Vegas", "Fallout_New_Vegas.jpg", ["RPG", "Shooter", "Open World", "Story Rich"]),
     ("Fears to Fathom: Carson House", "Fears_to_Fathom_Carson_House.jpg", ["Horror", "Story Rich"]),
@@ -73,6 +83,8 @@ GAME_CATALOG = [
     ("Grand Theft Auto: San Andreas - Definitive Edition", "GTA_San_Andreas_Definitive_Edition.jpg", ["Crime", "Action", "Open World"]),
     ("Grand Theft Auto V", "GTA_V.jpg", ["Crime", "Action", "Open World"]),
     ("Grand Theft Auto: Vice City - Definitive Edition", "GTA_Vice_City_Definitive_Edition.jpg", ["Crime", "Action", "Open World"]),
+    ("Hades", "Hades.jpg", ["Action", "RPG"]),
+    ("Helldivers 2", "Helldivers_2.jpg", ["Shooter", "Co-op", "Action"]),
     ("Hitman 2: Silent Assassin", "Hitman_2_Silent_Assassin.jpg", ["Stealth", "Action", "Puzzle"]),
     ("Hitman: Absolution", "Hitman_Absolution.jpg", ["Stealth", "Action"]),
     ("Hitman: Blood Money", "Hitman_Blood_Money.jpg", ["Stealth", "Action", "Puzzle"]),
@@ -88,6 +100,7 @@ GAME_CATALOG = [
     ("Max Payne 2", "Max_Payne_2.jpg", ["Action", "Shooter", "Story Rich"]),
     ("Max Payne 3", "Max_Payne_3.jpg", ["Action", "Shooter", "Story Rich"]),
     ("Medal of Honor", "Medal_of_Honor.jpg", ["Shooter", "Action", "Classic"]),
+    ("Microsoft Flight Simulator", "Microsoft_Flight_Simulator.jpg", ["Simulation", "Adventure"]),
     ("Mimic Search", "Mimic_Search.jpg", ["Horror", "Puzzle"]),
     ("Missing Hiker", "Missing_Hiker.jpg", ["Horror", "Adventure"]),
     ("Mouthwashing", "Mouthwashing.jpg", ["Horror", "Story Rich"]),
@@ -98,14 +111,23 @@ GAME_CATALOG = [
     ("Portal", "Portal.jpg", ["Puzzle", "Story Rich", "Classic"]),
     ("Portal 2", "Portal_2.jpg", ["Puzzle", "Co-op", "Story Rich"]),
     ("Prey", "Prey.jpg", ["Shooter", "RPG", "Story Rich"]),
+    ("Red Dead Redemption", "Red_Dead_Redemption.jpg", ["Action", "Open World", "Story Rich"]),
+    ("Red Dead Redemption 2", "Red_Dead_Redemption_2.jpg", ["Action", "Open World", "Story Rich"]),
     ("Resident Evil 0", "Resident_Evil_0.jpg", ["Horror", "Survival", "Classic"]),
     ("Resident Evil 2", "Resident_Evil_2.jpg", ["Horror", "Survival", "Action"]),
     ("Resident Evil 4", "Resident_Evil_4.jpg", ["Horror", "Action", "Survival"]),
     ("Rise of the Tomb Raider", "Rise_of_the_Tomb_Raider.jpg", ["Action", "Adventure", "Puzzle"]),
     ("Rust", "Rust.jpg", ["Survival", "Open World", "Co-op"]),
+    ("Silent Hill 2", "Silent_Hill_2.jpg", ["Horror", "Story Rich"]),
+    ("Silent Hill f", "Silent_Hill_f.jpg", ["Horror", "Story Rich"]),
+    ("SOMA", "SOMA.jpg", ["Horror", "Story Rich"]),
     ("Spider-Man Remastered", "Spider_man_Remastered.jpg", ["Action", "Adventure", "Superhero", "Open World"]),
+    ("Stardew Valley", "Stardew_Valley.jpg", ["Simulation", "Adventure", "Co-op"]),
+    ("Subnautica", "Subnautica.jpg", ["Survival", "Adventure", "Open World"]),
     ("Terraria", "Terraria.jpg", ["Adventure", "Survival", "Co-op"]),
     ("That Which Gave Chase", "That_Which_Gave_Chase.jpg", ["Horror", "Adventure"]),
+    ("The Last of Us Part I", "The_Last_of_Us_Part_I.jpg", ["Action", "Adventure", "Story Rich"]),
+    ("The Witcher 3: Wild Hunt", "The_Witcher_3_Wild_Hunt.jpg", ["RPG", "Open World", "Story Rich"]),
     ("Tomb Raider", "Tomb_Raider.jpg", ["Action", "Adventure", "Puzzle"]),
     ("Tomb Raider: Anniversary", "Tomb_Raider_Anniversary.jpg", ["Action", "Adventure", "Puzzle"]),
     ("Tomb Raider: Legend", "Tomb_Raider_Legend.jpg", ["Action", "Adventure", "Puzzle"]),
@@ -139,19 +161,76 @@ SPECIAL_TEXT = {
         "Team up, manage economy, learn maps, and discover that your crosshair placement becomes a personality trait after a few matches.",
         requirements(ram="8 GB", gpu="NVIDIA GTX 1060 / AMD RX 580", storage="85 GB"),
     ),
+    "Baldur's Gate 3": (
+        "A cinematic party RPG packed with choices, dice rolls, and memorable chaos.",
+        "Travel through a reactive fantasy world, build a party full of very strong personalities, and solve problems with strategy, dialogue, or complete nonsense if the dice allow it.",
+        requirements(cpu="Intel Core i5-4690 / AMD FX 8350", ram="16 GB", gpu="NVIDIA GTX 970 / AMD RX 480", storage="150 GB"),
+    ),
+    "Cyberpunk 2077": (
+        "A stylish open-world RPG about ambition, chrome, and dangerous side jobs.",
+        "Night City is loud, neon, and full of stories. It is the kind of game where you enter for the main quest and stay because every district keeps offering a different mood.",
+        requirements(cpu="Intel Core i7-6700 / AMD Ryzen 5 1600", ram="12 GB", gpu="NVIDIA RTX 2060 / AMD RX 5700 XT", storage="70 GB"),
+    ),
+    "Elden Ring": (
+        "A vast action RPG that rewards patience, curiosity, and controlled panic.",
+        "Ride across an enormous fantasy world, challenge bosses that absolutely mean business, and slowly build the confidence required to walk into places that previously erased you in seconds.",
+        requirements(cpu="Intel Core i7-8700K / AMD Ryzen 5 3600X", ram="16 GB", gpu="NVIDIA GTX 1070 / AMD RX Vega 56", storage="60 GB"),
+    ),
+    "Hades": (
+        "A fast action roguelike where every failed run somehow makes you want one more attempt.",
+        "Battle out of the Underworld, talk to a remarkably patient cast of gods and ghosts, and enjoy the rare game where repetition feels like momentum instead of grind.",
+        requirements(cpu="Intel Core i5 / AMD Ryzen 5", ram="8 GB", gpu="NVIDIA GTX 950 / AMD RX 560", storage="15 GB"),
+    ),
+    "Red Dead Redemption 2": (
+        "A cinematic open-world western with huge landscapes and even bigger attention to detail.",
+        "Ride through a beautiful and fading frontier, get distracted by strangers, weather, card games, and long scenic trips, then remember there is still a dramatic main story waiting for you.",
+        requirements(cpu="Intel Core i7-4770K / AMD Ryzen 5 1500X", ram="12 GB", gpu="NVIDIA GTX 1060 6GB / AMD RX 480 4GB", storage="150 GB"),
+    ),
+    "Stardew Valley": (
+        "A cozy farming and life sim that quietly steals entire weekends.",
+        "Grow crops, improve your farm, meet the local townspeople, and discover that a game can feel both productive and relaxing at the same time.",
+        requirements(cpu="Intel Core i3 / AMD Ryzen 3", ram="4 GB", gpu="OpenGL 3.3 compatible GPU", storage="1 GB"),
+    ),
+    "Subnautica": (
+        "An underwater survival adventure with beautiful views and very alarming sounds.",
+        "Dive deeper into an alien ocean, craft better equipment, and keep convincing yourself that the next dark trench probably contains useful materials and not terrible news.",
+        requirements(cpu="Intel Core i5 / AMD Ryzen 5", ram="8 GB", gpu="NVIDIA GTX 960 / AMD R9 280", storage="20 GB"),
+    ),
+    "The Witcher 3: Wild Hunt": (
+        "A story-rich open-world RPG with strong quests, monsters, and difficult moral choices.",
+        "Hunt creatures, follow political drama, and keep getting pulled into side quests that are often better written than entire games elsewhere.",
+        requirements(cpu="Intel Core i5-2500K / AMD Phenom II X4 940", ram="8 GB", gpu="NVIDIA GTX 770 / AMD R9 290", storage="60 GB"),
+    ),
 }
 
 
 DEMO_USERS = [
+    {"username": "DemoPlayer", "email": "demo@playnext.com", "password": "demo12345", "genres": ["RPG", "Story Rich", "Open World"]},
     {"username": "VoldemortFan69", "email": "voldemortfan69@playnext.local", "password": "demo12345", "genres": ["RPG", "Adventure"]},
     {"username": "NapoleonTinyButMighty", "email": "napoleon@playnext.local", "password": "demo12345", "genres": ["Strategy", "Action"]},
     {"username": "GravityGuruNewton", "email": "newton@playnext.local", "password": "demo12345", "genres": ["Puzzle", "Story Rich"]},
-    {"username": "PixelWanderer", "email": "pixel@playnext.local", "password": "demo12345", "genres": ["Adventure", "Open World"]},
-    {"username": "FactoryOverlord", "email": "factory@playnext.local", "password": "demo12345", "genres": ["Strategy", "Simulation"]},
-    {"username": "QuestGoblin", "email": "goblin@playnext.local", "password": "demo12345", "genres": ["RPG", "Open World"]},
-    {"username": "SuspiciousBarrel", "email": "barrel@playnext.local", "password": "demo12345", "genres": ["Horror", "Puzzle"]},
-    {"username": "StealthIntern", "email": "stealth@playnext.local", "password": "demo12345", "genres": ["Stealth", "Action"]},
-    {"username": "LaggingPhilosopher", "email": "lag@playnext.local", "password": "demo12345", "genres": ["Competitive", "Shooter"]},
+    {"username": "LoreLynx", "email": "lorelynx@playnext.local", "password": "demo12345", "genres": ["RPG", "Story Rich"]},
+    {"username": "MapMarkerMia", "email": "mia@playnext.local", "password": "demo12345", "genres": ["Open World", "Adventure"]},
+    {"username": "LateShiftLeo", "email": "leo@playnext.local", "password": "demo12345", "genres": ["Action", "Shooter"]},
+    {"username": "StorySnack", "email": "snack@playnext.local", "password": "demo12345", "genres": ["Story Rich", "Adventure"]},
+    {"username": "WeekendRanger", "email": "ranger@playnext.local", "password": "demo12345", "genres": ["Action", "Open World"]},
+    {"username": "NightShiftNina", "email": "nina@playnext.local", "password": "demo12345", "genres": ["Horror", "Story Rich"]},
+    {"username": "CouchCoopMax", "email": "max@playnext.local", "password": "demo12345", "genres": ["Co-op", "Adventure"]},
+    {"username": "TacticalTanya", "email": "tanya@playnext.local", "password": "demo12345", "genres": ["Strategy", "Simulation"]},
+    {"username": "RacingToast", "email": "toast@playnext.local", "password": "demo12345", "genres": ["Racing", "Action"]},
+    {"username": "PixelArchivist", "email": "archivist@playnext.local", "password": "demo12345", "genres": ["Classic", "Story Rich"]},
+    {"username": "SeaLevelSue", "email": "sue@playnext.local", "password": "demo12345", "genres": ["Survival", "Adventure"]},
+    {"username": "CozyNomad", "email": "nomad@playnext.local", "password": "demo12345", "genres": ["Simulation", "Adventure"]},
+]
+
+
+LEGACY_DEMO_USERNAMES = [
+    "PixelWanderer",
+    "FactoryOverlord",
+    "QuestGoblin",
+    "SuspiciousBarrel",
+    "StealthIntern",
+    "LaggingPhilosopher",
 ]
 
 
@@ -160,57 +239,80 @@ REVIEW_OVERRIDES = {
         ("VoldemortFan69", 4, "The game is great... but why do not I have a nose after choosing a character?"),
         ("NapoleonTinyButMighty", 3, "Trolls attack suddenly, like the Russian frost in 1812."),
         ("GravityGuruNewton", 5, "Hogwarts completely ignores my laws, and somehow I still respect the castle."),
-        ("QuestGoblin", 5, "I went to learn magic and accidentally enrolled in Inventory Management 101."),
+        ("StorySnack", 5, "I came to study magic and somehow got distracted by side quests for three hours."),
     ],
-    "Factorio": [
-        ("FactoryOverlord", 5, "I installed it for one evening and left three days later with conveyor belts in my dreams."),
-        ("GravityGuruNewton", 5, "The factory must grow. I am not sure who said it first, but I now obey."),
-        ("QuestGoblin", 4, "Very relaxing, if your idea of relaxing is arguing with iron plates."),
+    "Baldur's Gate 3": [
+        ("DemoPlayer", 5, "I came for one quest and stayed because every conversation turned into a surprise."),
+        ("LoreLynx", 5, "Great writing, great characters, and just enough chaos to make every plan feel risky."),
+        ("WeekendRanger", 5, "I meant to be serious, but the game kept rewarding my worst ideas."),
     ],
-    "Counter-Strike 2": [
-        ("LaggingPhilosopher", 4, "I peeked mid and discovered both mortality and bad Wi-Fi."),
-        ("NapoleonTinyButMighty", 5, "A tactical masterpiece, especially when everyone ignores the tactic."),
-        ("StealthIntern", 4, "The enemy cannot see me if I miss every shot and confuse them emotionally."),
+    "Cyberpunk 2077": [
+        ("DemoPlayer", 4, "Night City looks great, sounds great, and keeps giving me one more thing to check."),
+        ("MapMarkerMia", 5, "I opened the map for one mission and somehow found five more on the way."),
+        ("NightShiftNina", 4, "Very stylish, very busy, and dangerously easy to keep playing late at night."),
     ],
-    "Portal 2": [
-        ("GravityGuruNewton", 5, "Portals are illegal according to my paperwork, but I enjoyed the violation."),
-        ("SuspiciousBarrel", 5, "The cake jokes aged better than most of my group projects."),
-        ("PixelWanderer", 5, "Every puzzle made me feel smart exactly three seconds after feeling hopeless."),
+    "Hades": [
+        ("DemoPlayer", 5, "The game keeps defeating me in a very motivating way."),
+        ("CouchCoopMax", 5, "Every run feels fast, clear, and just different enough to try one more time."),
+        ("RacingToast", 4, "I said 'last run' three times and the game ignored me every time."),
     ],
-    "Grand Theft Auto V": [
-        ("NapoleonTinyButMighty", 5, "No plan survives contact with Los Santos traffic."),
-        ("PixelWanderer", 4, "I started a mission and somehow spent an hour choosing a car I immediately crashed."),
-        ("QuestGoblin", 4, "The city is so alive that even the sidewalks seem personally offended by me."),
+    "Red Dead Redemption 2": [
+        ("DemoPlayer", 5, "I tried to follow the story and got distracted by scenery, horses, and side activities."),
+        ("WeekendRanger", 5, "Very easy to lose an hour just riding around and looking at the world."),
+        ("PixelArchivist", 4, "Slow in a good way. It gives the world time to feel real."),
     ],
-    "Hitman World of Assassination": [
-        ("StealthIntern", 5, "A perfect game for people who say 'I have a plan' and then use a fish."),
-        ("PixelWanderer", 5, "Every mission makes me feel smart right before I accidentally knock out the wrong person."),
-        ("SuspiciousBarrel", 4, "Disguises work so well that I am now suspicious of every waiter in real life."),
-    ],
-    "Prey": [
-        ("GravityGuruNewton", 5, "I no longer trust coffee mugs, chairs, or the concept of safety."),
-        ("SuspiciousBarrel", 5, "The mimics turned interior design into a survival mechanic."),
-        ("FactoryOverlord", 4, "Great station. Terrible workplace safety policy."),
-    ],
-    "Rise of the Tomb Raider": [
-        ("VoldemortFan69", 4, "The tombs are excellent. The cliffs clearly hate me, but the tombs are excellent."),
-        ("QuestGoblin", 5, "I came for treasure and stayed because Lara has better cardio than my entire university group."),
-        ("PixelWanderer", 4, "Very pretty snow, very rude enemies, excellent climbing."),
+    "The Witcher 3: Wild Hunt": [
+        ("DemoPlayer", 5, "I wanted to hunt one monster and somehow spent an hour helping strangers and playing cards. Very dangerous game for my schedule."),
+        ("LoreLynx", 5, "Excellent quests, strong atmosphere, and a world that keeps pulling you off the main path."),
+        ("TacticalTanya", 4, "I came for the monsters and stayed because even the side missions were interesting."),
     ],
 }
 
 
-GENERIC_REVIEWS = [
-    ("PixelWanderer", 4, "I opened it for a quick session and immediately lost track of time. Suspicious behavior from a game."),
-    ("QuestGoblin", 5, "The side content keeps stealing my attention like it pays rent in my brain."),
-    ("SuspiciousBarrel", 4, "I do not fully trust the level design, which probably means it is doing a good job."),
-    ("StealthIntern", 4, "I tried to play carefully, failed loudly, and still had a great time."),
-    ("LaggingPhilosopher", 3, "My skill level says no, but my confidence keeps pressing Play."),
-    ("FactoryOverlord", 5, "The gameplay loop is dangerously comfortable. I respect it and fear it."),
-    ("VoldemortFan69", 4, "Strong atmosphere, good pacing, and no one asked me about my nose. Perfect."),
-    ("NapoleonTinyButMighty", 4, "The game has ambition. I respect ambition, especially when it does not invade Russia."),
-    ("GravityGuruNewton", 5, "Physics occasionally disagrees with me, but entertainment wins this round."),
+GENERIC_REVIEWERS = [
+    "CozyNomad",
+    "MapMarkerMia",
+    "LateShiftLeo",
+    "StorySnack",
+    "WeekendRanger",
+    "NightShiftNina",
+    "CouchCoopMax",
+    "TacticalTanya",
+    "RacingToast",
+    "PixelArchivist",
+    "SeaLevelSue",
+    "LoreLynx",
 ]
+
+
+GENERIC_REVIEW_TEXTS = [
+    (5, "Very easy to recommend. I planned a short session and stayed much longer than expected."),
+    (4, "Good atmosphere, clear gameplay, and enough variety to keep it interesting."),
+    (4, "Fun overall. I kept saying 'one more mission' and the game kept winning that argument."),
+    (5, "Strong first impression and a very comfortable gameplay loop."),
+    (3, "Not everything worked for me, but I still had a decent time with it."),
+    (4, "Looks good, plays smoothly, and never felt boring."),
+    (5, "I opened it for a quick test and forgot what time it was."),
+    (4, "A solid choice when you want something easy to get into after a long day."),
+    (4, "The game has enough personality to stay fun even when I was not playing perfectly."),
+    (5, "I came in curious and left fully convinced."),
+    (3, "A bit uneven for me, but there is still plenty here to like."),
+    (4, "It kept giving me a reason to continue, which is usually a very good sign."),
+]
+
+
+EXTRA_REVIEW_SEEDS = [
+    {"game": "Stardew Valley", "username": "DemoPlayer", "rating": 5, "content": "I only wanted a calm farming game and somehow developed a full calendar, social strategy, and emotional attachment to parsnips."},
+]
+
+
+DEMO_VIEW_HISTORY = {
+    "DemoPlayer": [
+        "The Witcher 3: Wild Hunt",
+        "Hades",
+        "Red Dead Redemption 2",
+    ]
+}
 
 
 def make_game_seed(title, cover_file, genres):
@@ -232,6 +334,8 @@ def make_game_seed(title, cover_file, genres):
         elif "Horror" in genres:
             storage = "15 GB"
         system_requirements = requirements(storage=storage)
+
+    description = PAGE_DESCRIPTION_OVERRIDES.get(title, description)
 
     return {
         "title": title,
@@ -256,9 +360,11 @@ def build_review_seeds():
             continue
 
         for offset in range(3):
-            username, rating, content = GENERIC_REVIEWS[(index + offset) % len(GENERIC_REVIEWS)]
+            username = GENERIC_REVIEWERS[(index + offset) % len(GENERIC_REVIEWERS)]
+            rating, content = GENERIC_REVIEW_TEXTS[(index * 2 + offset) % len(GENERIC_REVIEW_TEXTS)]
             review_seeds.append({"game": title, "username": username, "rating": rating, "content": content})
 
+    review_seeds.extend(EXTRA_REVIEW_SEEDS)
     return review_seeds
 
 
@@ -292,9 +398,19 @@ def seed_database(db):
 
     db.flush()
 
+    legacy_users = db.query(User).filter(User.username.in_(LEGACY_DEMO_USERNAMES)).all()
+    for legacy_user in legacy_users:
+        db.delete(legacy_user)
+
+    db.flush()
+
     user_by_username = {}
     for user_seed in DEMO_USERS:
-        user = db.query(User).filter(User.email == user_seed["email"]).first()
+        user = (
+            db.query(User)
+            .filter((User.email == user_seed["email"]) | (User.username == user_seed["username"]))
+            .first()
+        )
         if user is None:
             user = User(
                 username=user_seed["username"],
@@ -303,6 +419,11 @@ def seed_database(db):
                 role="player",
             )
             db.add(user)
+        else:
+            user.username = user_seed["username"]
+            user.email = user_seed["email"]
+            user.password_hash = hash_password(user_seed["password"])
+            user.role = "player"
 
         user.favorite_genres = [genre_by_name[name] for name in user_seed["genres"]]
         user_by_username[user_seed["username"]] = user
@@ -346,5 +467,20 @@ def seed_database(db):
         )
         if existing_log is None:
             db.add(ActivityLog(user_id=user.id, action="seed_review", details=game.title))
+
+    for username, viewed_titles in DEMO_VIEW_HISTORY.items():
+        user = user_by_username[username]
+        for title in viewed_titles:
+            existing_view = (
+                db.query(ActivityLog)
+                .filter(
+                    ActivityLog.user_id == user.id,
+                    ActivityLog.action == "view_game",
+                    ActivityLog.details == title,
+                )
+                .first()
+            )
+            if existing_view is None and title in game_by_title:
+                db.add(ActivityLog(user_id=user.id, action="view_game", details=title))
 
     db.commit()

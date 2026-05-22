@@ -14,14 +14,22 @@ function switchTab(tabName) {
   const isLogin = tabName === "login";
   loginForm.classList.toggle("hidden", !isLogin);
   registerForm.classList.toggle("hidden", isLogin);
-  authTitle.textContent = isLogin ? "Welcome back" : "Create your player account";
-  authSubtitle.textContent = isLogin
-    ? "Use your email and password to enter PlayNext."
-    : "Register a new player profile and start exploring the catalog.";
+  authTitle.textContent = isLogin ? "Welcome back" : "Create account";
+  authSubtitle.textContent = isLogin ? "Sign in to continue." : "Create an account to continue.";
 
   tabButtons.forEach((button) => {
     button.classList.toggle("active", button.dataset.authTab === tabName);
   });
+}
+
+async function loginWithCredentials(email, password) {
+  const response = await api("/auth/login", {
+    method: "POST",
+    auth: false,
+    body: { email, password },
+  });
+  setToken(response.access_token);
+  window.location.href = "/app.html";
 }
 
 tabButtons.forEach((button) => {
@@ -33,16 +41,7 @@ loginForm.addEventListener("submit", async (event) => {
   const formData = new FormData(loginForm);
 
   try {
-    const response = await api("/auth/login", {
-      method: "POST",
-      auth: false,
-      body: {
-        email: formData.get("email"),
-        password: formData.get("password"),
-      },
-    });
-    setToken(response.access_token);
-    window.location.href = "/app.html";
+    await loginWithCredentials(formData.get("email"), formData.get("password"));
   } catch (error) {
     showToast(error.message);
   }

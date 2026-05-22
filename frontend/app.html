@@ -7,20 +7,17 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Barlow:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Barlow:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/assets/styles.css" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="stylesheet" href="/assets/styles.css?v=17" />
   </head>
   <body class="app-body">
     <header class="site-header">
       <div class="page-shell header-shell">
         <a class="brand" href="/app.html">
-          <span class="brand-mark">P</span>
-          <div>
-            <strong>PlayNext</strong>
-            <small>Game recommendations</small>
-          </div>
+          <img class="brand-logo" src="/logo2.png" alt="PlayNext logo" />
         </a>
 
         <nav class="main-nav">
@@ -30,7 +27,10 @@
         </nav>
 
         <div class="header-actions">
-          <div class="user-pill" id="headerUser">Loading...</div>
+          <div class="header-profile">
+            <div class="header-avatar" id="headerAvatar">P</div>
+            <div class="user-pill" id="headerUser">Loading...</div>
+          </div>
           <button class="ghost-button" id="logoutButton" type="button">Log Out</button>
         </div>
       </div>
@@ -38,46 +38,89 @@
 
     <main class="page-shell app-shell">
       <section class="panel active" data-panel="explore">
-        <div class="hero-strip">
-          <div>
-            <p class="eyebrow">Explore</p>
-            <h1>Recommended games for your next session</h1>
-            <p class="hero-text">
-              Browse curated recommendations, open game pages, rate titles, and read community reviews.
-            </p>
+        <section class="dashboard-hero">
+          <aside class="spotlight-card spotlight-card-wide" id="spotlightCard"></aside>
+        </section>
+
+        <section class="section-card">
+          <div class="section-head">
+            <div>
+              <h2>Search</h2>
+              <p id="recommendationHint">Search across the full catalog by title or genre.</p>
+            </div>
           </div>
-          <div class="hero-strip-side">
+
+          <div class="control-row single-control">
             <label class="search-field">
+              <span class="field-caption">Search by title or genre</span>
               <input id="searchInput" type="search" placeholder="Search by title or genre" />
             </label>
           </div>
-        </div>
+        </section>
 
-        <div class="section-card">
+        <section class="section-card hidden" id="searchResultsSection">
           <div class="section-head">
             <div>
-              <h2>Game Catalog</h2>
-              <p id="recommendationHint">Popular titles sorted by community rating.</p>
+              <h2>Search Results</h2>
+              <p id="searchResultsHint">Matching games will appear here.</p>
+            </div>
+          </div>
+          <div id="searchResultsGrid" class="games-grid"></div>
+        </section>
+
+        <section class="shelf-section" id="forYouSection">
+          <div class="section-head">
+            <div>
+              <h2>For You</h2>
+              <p>Games selected using your saved genres and ratings.</p>
+            </div>
+          </div>
+          <div class="games-grid" id="forYouGrid"></div>
+        </section>
+
+        <section class="shelf-section hidden" id="recentlyViewedSection">
+          <div class="section-head">
+            <div>
+              <h2>Recently Viewed</h2>
+              <p>Games you opened recently.</p>
+            </div>
+          </div>
+          <div id="recentlyViewedGrid" class="game-list"></div>
+        </section>
+
+        <section class="shelf-section" id="topRatedSection">
+          <div class="section-head">
+            <div>
+              <h2>Top Rated</h2>
+              <p>Games with the strongest average ratings right now.</p>
+            </div>
+          </div>
+          <div class="tile-grid" id="topRatedGrid"></div>
+        </section>
+
+        <section class="section-card catalog-section" id="catalogSection">
+          <div class="section-head">
+            <div>
+              <h2>Full Catalog</h2>
+              <p>All games currently available in PlayNext.</p>
             </div>
           </div>
           <div id="gamesGrid" class="games-grid"></div>
-          <div id="gamesEmpty" class="empty-state hidden">No games match your current search.</div>
-        </div>
+        </section>
       </section>
 
       <section class="panel" data-panel="preferences">
         <div class="hero-strip compact">
           <div>
-            <p class="eyebrow">Preferences</p>
-            <h1>Choose the genres you want to see first</h1>
+            <h1>Choose your favorite genres</h1>
             <p class="hero-text">
-              Save favorite genres so PlayNext can highlight games closer to your taste.
+              These genres help PlayNext decide what should appear higher in Explore.
             </p>
           </div>
         </div>
 
-        <div class="two-column">
-          <div class="section-card">
+        <div class="preferences-stack">
+          <section class="section-card">
             <div class="section-head">
               <div>
                 <h2>Favorite Genres</h2>
@@ -86,30 +129,26 @@
               <button class="primary-button" id="saveGenresButton" type="button">Save Genres</button>
             </div>
             <div id="genresGrid" class="genres-grid"></div>
-          </div>
+          </section>
 
-          <div class="section-card">
+          <section class="section-card">
             <div class="section-head">
               <div>
                 <h2>Favorite Games</h2>
                 <p>Games with your personal rating of 5 stars appear here.</p>
               </div>
             </div>
-            <div id="favoriteGamesGrid" class="games-grid compact-grid"></div>
-            <div id="favoritesEmpty" class="empty-state hidden">
-              Your favorite games list is still empty. Rate a game with 5 stars to add it here.
-            </div>
-          </div>
+            <div id="favoriteGamesGrid" class="tile-grid compact-tile-grid"></div>
+          </section>
         </div>
       </section>
 
       <section class="panel" data-panel="profile">
         <div class="hero-strip compact">
           <div>
-            <p class="eyebrow">Profile</p>
-            <h1>Your PlayNext player profile</h1>
+            <h1>Your player profile</h1>
             <p class="hero-text">
-              Manage your account and keep track of your ratings, reviews, and favorites.
+              View your account details, saved genres, ratings, and recent activity.
             </p>
           </div>
         </div>
@@ -118,10 +157,9 @@
           <section class="section-card profile-card">
             <div class="profile-top">
               <div class="avatar" id="profileAvatar">P</div>
-              <div>
+              <div class="profile-top-info">
                 <h2 id="profileUsername">Loading...</h2>
                 <p id="profileEmail">Loading...</p>
-                <span class="role-badge">Player</span>
               </div>
             </div>
 
@@ -132,22 +170,39 @@
               </div>
             </div>
 
+            <div>
+              <h3 class="subsection-title">Favorite Genres</h3>
+              <div class="genres-row" id="profileGenres"></div>
+            </div>
+
             <div class="profile-actions">
               <button class="secondary-button" id="openPasswordModal" type="button">Change Password</button>
               <button class="danger-button" id="deleteAccountButton" type="button">Delete Account</button>
             </div>
           </section>
 
-          <section class="section-card">
-            <div class="section-head">
-              <div>
-                <h2>Player Stats</h2>
-                <p>A quick overview of your ratings, reviews, and saved preferences.</p>
+          <div class="stack-column">
+            <section class="section-card">
+              <div class="section-head">
+                <div>
+                  <h2>Player Stats</h2>
+                  <p>Short summary of your activity in PlayNext.</p>
+                </div>
               </div>
-            </div>
-            <div class="stats-grid" id="statsGrid"></div>
-          </section>
+              <div class="stats-grid" id="statsGrid"></div>
+            </section>
+          </div>
         </div>
+
+        <section class="section-card profile-recent-card">
+          <div class="section-head">
+            <div>
+              <h2>Recent Activity</h2>
+              <p>The latest games you opened.</p>
+            </div>
+          </div>
+          <div id="profileRecentGrid" class="game-list"></div>
+        </section>
       </section>
     </main>
 
@@ -173,6 +228,6 @@
 
     <div id="toast" class="toast"></div>
 
-    <script type="module" src="/assets/app.js?v=3"></script>
+    <script type="module" src="/assets/app.js?v=13"></script>
   </body>
 </html>
